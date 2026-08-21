@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Normal Maps on ケッサリア</title><link>https://akiloneus.github.io/ja/tags/normal-maps/</link><description>Recent content in Normal Maps on ケッサリア</description><generator>Hugo</generator><language>ja-JP</language><lastBuildDate>Fri, 21 Aug 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://akiloneus.github.io/ja/tags/normal-maps/index.xml" rel="self" type="application/rss+xml"/><item><title>洞窟ステージの地形法線マッピングに関する観察</title><link>https://akiloneus.github.io/ja/notes/sinisistar2-cave-normal-mapping/</link><pubDate>Fri, 21 Aug 2026 00:00:00 +0800</pubDate><guid>https://akiloneus.github.io/ja/notes/sinisistar2-cave-normal-mapping/</guid><description>&lt;aside class="source-note" aria-label="テキストの由来"&gt;&lt;strong&gt;原文からの AI 補助翻訳&lt;/strong&gt;
+ &lt;span&gt; · &lt;a href="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/"&gt;原文を読む (English)&lt;/a&gt;&lt;/span&gt;&lt;/aside&gt;
+
+&lt;p&gt;洞窟ステージをプレイ中、非常にユニークなライティングの挙動に気づきました。光源がいかなる方向にあっても、石のハイライトが常に「左端」に固定されているように見えたのです。&lt;/p&gt;
+&lt;p&gt;これらの石は、レリアの右側に位置している間は彼女の明かりで鮮明に照らされますが、レリアが通り過ぎると、ハイライトが左端にのみ残ったまま、暗闇へと沈んでいきました。この原因を特定するため、Unity上でテクスチャを確認しました。&lt;/p&gt;
+&lt;figure class="article-media article-media--medium article-media--center"&gt;
+ &lt;a class="article-media__link" href="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/textures.png" aria-label="Open Unity で並べて表示した地形のカラー、法線、補助テクスチャ at full size"&gt;
+ &lt;img src="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/textures.png" alt="Unity で並べて表示した地形のカラー、法線、補助テクスチャ" loading="lazy"&gt;
+ &lt;/a&gt;
+ &lt;figcaption&gt;Unity で並べて表示した、抽出した地形テクスチャ。&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;テクスチャはドット絵ですが、その視覚的な結果は、&lt;strong&gt;左上からの光源に照らされた丸石の写真&lt;/strong&gt;のように見えます。&lt;/p&gt;
+&lt;figure class="article-media article-media--wide article-media--center"&gt;
+ &lt;a class="article-media__link" href="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/sini2_cave_lighting.gif" aria-label="Open SiNiSistar2 の洞窟シーンにおける Lelia の光源 at full size"&gt;
+ &lt;img src="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/sini2_cave_lighting.gif" alt="SiNiSistar2 の洞窟シーンにおける Lelia の光源" loading="eager"&gt;
+ &lt;/a&gt;
+ &lt;figcaption&gt;ゲーム内での観察：Lelia が石を通り過ぎた後も、見えるハイライトは石の左端に残っている。&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id="主な観察結果"&gt;主な観察結果&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;抽出したテクスチャは、Unity 上で Default ではなく Normal map として扱った場合に異なる結果を示します。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class="article-media article-media--narrow article-media--center"&gt;
+ &lt;a class="article-media__link" href="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/texture_type.png" aria-label="Open Texture Type メニューを表示した Unity Inspector at full size"&gt;
+ &lt;img src="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/texture_type.png" alt="Texture Type メニューを表示した Unity Inspector" loading="lazy"&gt;
+ &lt;/a&gt;
+ &lt;figcaption&gt;Unity の再現テストにおける Texture Type メニュー。&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;法線マップの &lt;strong&gt;X軸（Red チャンネル）&lt;/strong&gt; が反転しているように見受けられます。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class="article-media article-media--narrow article-media--center"&gt;
+ &lt;a class="article-media__link" href="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/channel_swizzle.png" aria-label="Open Unity のチャンネルスウィズル設定 at full size"&gt;
+ &lt;img src="https://akiloneus.github.io/notes/sinisistar2-cave-normal-mapping/Media/channel_swizzle.png" alt="Unity のチャンネルスウィズル設定" loading="lazy"&gt;
+ &lt;/a&gt;
+ &lt;figcaption&gt;再現テストで X 軸を反転するために使用したチャンネルスウィズル。&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;code&gt;Texture Type&lt;/code&gt; を &lt;code&gt;Normal map&lt;/code&gt; に変更し、&lt;strong&gt;Swizzle (1 - R)&lt;/strong&gt; を適用してX軸を反転させたところ、私の Unity テストでは標準的な物理ベースのライティング挙動を再現することができました。&lt;/p&gt;</description></item></channel></rss>

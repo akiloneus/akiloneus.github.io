@@ -1,0 +1,596 @@
+/* ==========================================================================
+   Akiloneus — palette + light/dark toggle
+   Loaded after the theme CSS, so these overrides win.
+   Dark is the default; light is an explicit user preference.
+   ========================================================================== */
+
+/* ---- Dark (default): cool-toned scheme -------------------------------- */
+:root {
+  --background: #1a1e24;
+  --foreground: #d1e2e7;
+  --accent: #90a8c7;
+  --muted: #77899f;
+}
+
+/* ---- Light: aged parchment / faded vellum ----------------------------- */
+:root[data-theme="light"] {
+  --background: #ece2cd;
+  --foreground: #423a29;
+  --accent: #8f5228;
+  --muted: #8a7a5c;
+}
+
+/* CJK fallback for the Terminal shell. Fira Code remains first for Latin. */
+@font-face {
+  font-family: "Kessaria Sarasa Mono SC";
+  src: url("/fonts/sarasa-mono-sc-kessaria.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kessaria Sarasa Mono J";
+  src: url("/fonts/sarasa-mono-j-kessaria.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+html[lang^="zh"] body {
+  font-family: "Fira Code", "Kessaria Sarasa Mono SC", Monaco, Consolas, "Ubuntu Mono", monospace;
+}
+
+html[lang="ja"] body {
+  font-family: "Fira Code", "Kessaria Sarasa Mono J", Monaco, Consolas, "Ubuntu Mono", monospace;
+}
+
+/* ---- Quiet meta + footer --------------------------------------------- */
+.post-meta,
+.post-date,
+.post-author,
+.footer {
+  color: var(--muted);
+}
+
+/* ---- Site subtitle under the logo ------------------------------------ */
+.header__subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Let the site title retain Terminal's color block and right-hand rail. */
+.header__logo .logo {
+  padding: 0.35rem 0.6rem;
+  color: var(--background);
+  background: var(--accent);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.header__logo::after {
+  margin-left: 0.85rem;
+}
+
+.brand-token {
+  display: inline-block;
+  padding: 0;
+  color: var(--accent);
+  background: transparent;
+  font-weight: 600;
+}
+
+/* ---- Theme toggle button --------------------------------------------- */
+.theme-toggle {
+  flex: 0 0 auto;
+  margin-left: 12px;
+  padding: 3px 9px;
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+.theme-toggle:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* Fixed-width, centered slot so the glyph's width never shifts the layout */
+.theme-toggle__icon {
+  display: inline-block;
+  width: 1.2em;
+  text-align: center;
+  font-variant-emoji: text;
+}
+
+.theme-toggle__icon::before {
+  content: "\263E\FE0E";
+  /* moon (text presentation) — click to go dark */
+}
+
+:root[data-theme="dark"] .theme-toggle__icon::before {
+  content: "\2600\FE0E";
+  /* sun (text presentation) — click to go light */
+}
+
+/* ---- Shared language dropdown: supports future locales ---------------- */
+.language-selector {
+  flex: 0 0 auto;
+}
+
+.language-selector .menu__trigger {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  min-height: 2.4rem;
+  height: 2.4rem;
+  margin-left: 0;
+  padding: 0 0.65rem;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  white-space: nowrap;
+}
+
+.language-selector .menu__dropdown {
+  width: max-content;
+}
+
+.language-selector .menu__dropdown>li a {
+  white-space: nowrap;
+}
+
+/* ---- Full-screen title screen ---------------------------------------- */
+.landing-body {
+  min-height: 100svh;
+}
+
+.title-screen {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  padding: clamp(2rem, 7vw, 6rem);
+}
+
+.title-screen__content {
+  width: min(100%, 44rem);
+}
+
+.title-screen__masthead {
+  margin-bottom: clamp(2.5rem, 9vh, 6rem);
+}
+
+.title-screen__title-sprite {
+  flex: 0 0 auto;
+  display: block;
+  width: auto;
+  height: clamp(3rem, 10.5vw, 7.5rem);
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  transform: translate(-3px, -3px) scaleX(-1);
+  image-rendering: pixelated;
+}
+
+.title-screen__masthead h1 {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: clamp(0.35rem, 1vw, 0.75rem);
+  box-sizing: border-box;
+  min-width: min(100%, 31rem);
+  margin: 0;
+  padding: 0.22em 0.14em 0 0;
+  color: var(--background);
+  background: var(--accent);
+  font-size: clamp(3.2rem, 11vw, 7.5rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 0.9;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.title-screen__masthead p {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.subtitle-with-icon {
+  white-space: nowrap;
+}
+
+.subtitle-slug-icon {
+  display: inline;
+  box-sizing: content-box;
+  width: 2.6em;
+  height: 2.6em;
+  max-width: none;
+  margin: 0 0 0 0.35em;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  vertical-align: middle;
+  transform: translateY(-3px);
+  image-rendering: pixelated;
+}
+
+.title-screen__navigation ul {
+  width: min(100%, 26rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.title-screen__navigation li+li {
+  margin-top: 0.45rem;
+}
+
+.title-screen__option {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.55rem 0.8rem;
+  color: var(--foreground);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  text-decoration: none;
+  transition: background-color 0.12s linear, color 0.12s linear;
+}
+
+.title-screen__indicator {
+  opacity: 0;
+}
+
+.title-screen__option.is-selected,
+.title-screen__option:hover,
+.title-screen__option:focus-visible {
+  background: var(--accent);
+  color: var(--background);
+  outline: none;
+}
+
+.title-screen__option.is-selected .title-screen__indicator,
+.title-screen__option:hover .title-screen__indicator,
+.title-screen__option:focus-visible .title-screen__indicator {
+  opacity: 1;
+}
+
+.title-screen__utilities {
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 2.5rem);
+  right: clamp(1.25rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.title-screen__theme-toggle {
+  margin-left: 0;
+}
+
+/* ---- Smooth palette change, unless reduced motion is requested -------- */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  body,
+  .title-screen__option {
+    transition: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .title-screen {
+    align-items: end;
+    padding-bottom: 14vh;
+  }
+
+  .title-screen__masthead h1 {
+    font-size: clamp(1.35rem, 11vw, 2.8rem);
+    letter-spacing: 0.035em;
+  }
+
+  .title-screen__title-sprite {
+    height: clamp(2rem, 7.5vw, 2.8rem);
+  }
+}
+
+@media (max-height: 620px) {
+  .title-screen {
+    align-items: start;
+    padding-top: 6rem;
+    padding-bottom: 2rem;
+  }
+
+  .title-screen__masthead {
+    margin-bottom: 1.4rem;
+  }
+
+  .title-screen__navigation li + li {
+    margin-top: 0.25rem;
+  }
+
+  .title-screen__option {
+    min-height: 2.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+}
+
+/* ---- Header back control --------------------------------------------- */
+.back-button {
+  flex: 0 0 auto;
+  display: grid;
+  box-sizing: border-box;
+  width: 2.4rem;
+  min-height: 2.4rem;
+  height: 2.4rem;
+  place-items: center;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 1.35rem;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.back-button:hover,
+.back-button:focus-visible {
+  background: var(--accent);
+  color: var(--background);
+  outline: none;
+}
+
+/* ---- Article provenance ---------------------------------------------- */
+.source-note {
+  margin: 0 0 2rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.source-note strong {
+  color: var(--foreground);
+}
+
+/* ---- Article media: field-record cards, not default theme thumbnails -- */
+.article-media {
+  width: min(100%, var(--article-media-width, 42rem));
+  margin: 2rem auto 2.5rem;
+}
+
+.article-media--wide {
+  --article-media-width: 48rem;
+}
+
+.article-media--medium {
+  --article-media-width: 34rem;
+}
+
+.article-media--narrow {
+  --article-media-width: 24rem;
+}
+
+.article-media--left {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.article-media--right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.article-media__link {
+  display: block;
+}
+
+.article-media__link:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+.article-media img {
+  width: 100%;
+  margin: 0;
+  border: 8px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 8px;
+  overflow: hidden;
+}
+
+.article-media figcaption {
+  margin: 0.55rem 0 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.article-media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.25rem;
+  width: min(100%, 48rem);
+  margin: 2rem auto 2.5rem;
+}
+
+.article-media-grid .article-media {
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .article-media-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ---- Inner-page header: preserve Terminal's original logo rail ------ */
+.header__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+/* ---- Section indexes: Terminal's divider belongs to the section title -- */
+.section-index {
+  margin-top: 3rem;
+}
+
+.section-index__header {
+  margin-bottom: 2.5rem;
+}
+
+.section-index__header h1 {
+  margin: 0;
+  color: var(--accent);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.1;
+}
+
+.section-index__rule {
+  height: 7px;
+  margin: 0.7rem 0 1rem;
+  border-top: 3px dotted var(--accent);
+  border-bottom: 3px dotted var(--accent);
+}
+
+.section-index__description {
+  max-width: 48rem;
+  color: var(--muted);
+}
+
+.section-index__description> :first-child {
+  margin-top: 0;
+}
+
+.section-index__description> :last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Note index: quiet log entries; the section keeps the loud divider -- */
+.note-list {
+  width: 100%;
+}
+
+.note-card {
+  margin: 0;
+  padding: 0.4rem 0 1.4rem 1.1rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.note-card+.note-card {
+  margin-top: 1.1rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
+.note-card:hover {
+  border-left-color: var(--accent);
+}
+
+.note-card__meta,
+.note-card__tags {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.note-card__meta>*:not(:first-child)::before {
+  content: "::";
+  display: inline-block;
+  margin: 0 0.55rem;
+}
+
+.note-card__title {
+  margin: 0.4rem 0 0.55rem;
+  color: var(--accent);
+  font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+  line-height: 1.3;
+}
+
+.note-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.note-card__title a:hover,
+.note-card__title a:focus-visible {
+  text-decoration: underline;
+}
+
+.note-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.85rem;
+}
+
+.note-card__summary {
+  max-width: 48rem;
+  margin-top: 0.8rem;
+}
+
+.note-card__summary p {
+  margin: 0;
+}
+
+.note-card__read-more {
+  display: inline-block;
+  margin-top: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.note-card__read-more:hover,
+.note-card__read-more:focus-visible {
+  text-decoration: underline;
+}
+
+.header__utilities {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theme-toggle,
+.menu--mobile .menu__trigger {
+  box-sizing: border-box;
+  min-height: 2.4rem;
+  height: 2.4rem;
+}
+
+.theme-toggle {
+  margin-left: 0;
+  padding: 0 0.65rem;
+}
+
+.menu--mobile .menu__trigger {
+  margin-left: 0;
+  padding: 0 0.65rem;
+}
+
+@media (max-width: 684px) {
+  .menu--mobile .menu__trigger {
+    display: inline-flex;
+    align-items: center;
+  }
+
+}
