@@ -1,0 +1,1180 @@
+/* ==========================================================================
+   Akiloneus — palette + light/dark toggle
+   Loaded after the theme CSS, so these overrides win.
+   Dark is the default; light and system-following are explicit preferences.
+   ========================================================================== */
+
+/* ---- Dark (default): cool-toned scheme -------------------------------- */
+:root {
+  --background: #1a1e24;
+  --foreground: #d1e2e7;
+  --accent: #90a8c7;
+  --muted: #77899f;
+}
+
+/* ---- Light: aged parchment / faded vellum ----------------------------- */
+:root[data-theme="light"] {
+  --background: #ece2cd;
+  --foreground: #423a29;
+  --accent: #8f5228;
+  --muted: #6f6048;
+}
+
+/* Content subsets, rebuilt with scripts/subset-fonts.py. Sarasa supplies CJK
+   glyphs; Terminal's bundled Fira Code owns Latin letters, numerals, and code. */
+@font-face {
+  font-family: "Kessaria Sarasa Mono SC";
+  src: url("/fonts/sarasa-mono-sc-kessaria.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+3000-303F, U+3040-30FF, U+31F0-31FF, U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+
+@font-face {
+  font-family: "Kessaria Sarasa Mono J";
+  src: url("/fonts/sarasa-mono-j-kessaria.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+3000-303F, U+3040-30FF, U+31F0-31FF, U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+
+/* Cross-language labels use their own lang, rather than the page's font. */
+body:lang(zh),
+[lang]:lang(zh) {
+  font-family: "fira code", "Kessaria Sarasa Mono SC", Monaco, Consolas, "Ubuntu Mono", monospace;
+}
+
+body:lang(ja),
+[lang]:lang(ja) {
+  font-family: "fira code", "Kessaria Sarasa Mono J", Monaco, Consolas, "Ubuntu Mono", monospace;
+}
+
+/* ---- Quiet meta + footer --------------------------------------------- */
+.post-meta,
+.post-date,
+.post-author,
+.footer {
+  color: var(--muted);
+}
+
+.footer {
+  opacity: 1;
+}
+
+/* Inline code needs text contrast on its tinted background as well. */
+.post-content :not(pre) > code {
+  color: var(--foreground);
+}
+
+/* ---- Site subtitle under the logo ------------------------------------ */
+.header__subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Let the site title retain Terminal's color block and right-hand rail. */
+.header__logo .logo {
+  padding: 0.35rem 0.6rem;
+  color: var(--background);
+  background: var(--accent);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.header__logo::after {
+  margin-left: 0.85rem;
+}
+
+.brand-token {
+  display: inline-block;
+  padding: 0;
+  color: var(--accent);
+  background: transparent;
+  font-weight: 600;
+}
+
+/* ---- Theme toggle button --------------------------------------------- */
+.theme-toggle {
+  flex: 0 0 auto;
+  margin-left: 12px;
+  padding: 3px 9px;
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+/* Fixed-width, centered slot so the glyph's width never shifts the layout */
+.theme-toggle__icon,
+.theme-choice__icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 2.4em;
+  text-align: center;
+  white-space: nowrap;
+  font-variant-emoji: text;
+}
+
+.theme-toggle__icon::before {
+  content: "\263E\FE0E";
+  /* The icon always represents the saved mode, rather than the next action. */
+}
+
+:root[data-theme-preference="light"] .theme-toggle__icon::before {
+  content: "\2600\FE0E";
+}
+
+:root[data-theme-preference="system"] .theme-toggle__icon::before {
+  content: "\2600\FE0E/\263E\FE0E";
+}
+
+/* ---- Shared language dropdown: supports future locales ---------------- */
+.language-selector {
+  flex: 0 0 auto;
+}
+
+.language-selector__disclosure {
+  position: relative;
+}
+
+.language-selector__trigger {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  min-height: 2.4rem;
+  height: 2.4rem;
+  margin-left: 0;
+  padding: 0 0.65rem;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  white-space: nowrap;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.language-selector__trigger::-webkit-details-marker {
+  display: none;
+}
+
+.language-selector__options {
+  position: absolute;
+  z-index: 99;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 100%;
+  max-width: calc(100vw - 2rem);
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  border: 2px solid var(--accent);
+  background: var(--background);
+  color: var(--accent);
+}
+
+.language-selector__options > li + li {
+  margin-top: 0.4rem;
+}
+
+.language-selector__options a {
+  display: block;
+  padding: 0.3rem 0.4rem;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.language-selector__options a[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* ---- Full-screen title screen ---------------------------------------- */
+.landing-body {
+  min-height: 100svh;
+}
+
+.title-screen {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  min-height: 100svh;
+  padding: clamp(2rem, 7vw, 6rem);
+}
+
+.title-screen__masthead {
+  position: absolute;
+  top: clamp(7.5rem, 20vh, 15rem);
+  left: 50%;
+  width: min(100%, 44rem);
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.title-screen__title-sprite {
+  flex: 0 0 auto;
+  display: block;
+  width: auto;
+  height: clamp(3rem, 10.5vw, 7.5rem);
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  transform: translate(-3px, -3px) scaleX(-1);
+  image-rendering: pixelated;
+}
+
+.title-screen__masthead h1 {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: clamp(0.35rem, 1vw, 0.75rem);
+  box-sizing: border-box;
+  min-width: min(100%, 31rem);
+  margin: 0;
+  padding: 0.22em 0.14em 0 0;
+  color: var(--background);
+  background: var(--accent);
+  font-size: clamp(3.2rem, 11vw, 7.5rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 0.9;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.title-screen__masthead p {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.subtitle-with-icon {
+  white-space: nowrap;
+}
+
+.subtitle-slug-icon {
+  display: inline;
+  box-sizing: content-box;
+  width: 2.6em;
+  height: 2.6em;
+  max-width: none;
+  margin: 0 0 0 0.35em;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  vertical-align: middle;
+  transform: translateY(-3px);
+  image-rendering: pixelated;
+}
+
+.title-screen__navigation ul {
+  width: min(100%, 26rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform-origin: top left;
+}
+
+.title-screen__navigation {
+  position: absolute;
+  top: clamp(21rem, 48vh, 36rem);
+  left: 50%;
+  width: min(100%, 44rem);
+  transform: translateX(-50%);
+}
+
+.title-screen__navigation ul.is-squeezing-in {
+  animation: title-menu-squeeze-in 180ms cubic-bezier(0.2, 0.85, 0.32, 1.12) both;
+  will-change: transform, opacity;
+}
+
+@keyframes title-menu-squeeze-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-0.45rem) scaleY(0.35);
+  }
+
+  68% {
+    opacity: 1;
+    transform: translateY(0) scaleY(1.045);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.title-screen__navigation li+li {
+  margin-top: 0.45rem;
+}
+
+.title-screen__option {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.55rem 0.8rem;
+  color: var(--foreground);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  text-decoration: none;
+  transition: background-color 0.12s linear, color 0.12s linear;
+}
+
+.title-screen__indicator {
+  opacity: 0;
+}
+
+.title-screen__label-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.title-screen__language-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.title-screen__choice {
+  box-sizing: border-box;
+  width: 100%;
+  grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-align: left;
+}
+
+.title-screen__choice .theme-choice__icon {
+  margin-inline-start: 0.5rem;
+}
+
+.title-screen__choice-state::after {
+  content: "";
+  display: block;
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: currentColor;
+  visibility: hidden;
+}
+
+.title-screen__choice[aria-pressed="true"] .title-screen__choice-state::after,
+.title-screen__choice[aria-current="page"] .title-screen__choice-state::after {
+  visibility: visible;
+}
+
+.title-screen__option.is-selected {
+  background: var(--accent);
+  color: var(--background);
+  outline: none;
+}
+
+.title-screen__option.is-selected .title-screen__indicator,
+.title-screen__option:hover .title-screen__indicator,
+.title-screen__option:focus-visible .title-screen__indicator {
+  opacity: 1;
+}
+
+.title-screen__utilities {
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 2.5rem);
+  right: clamp(1.25rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.title-screen__theme-toggle {
+  margin-left: 0;
+}
+
+/* ---- Smooth palette change, unless reduced motion is requested -------- */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  body,
+  .header__controls,
+  .title-screen__option {
+    transition: none;
+  }
+
+  .title-screen__navigation ul.is-squeezing-in {
+    animation: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .title-screen {
+    padding-bottom: 14vh;
+  }
+
+  .title-screen__masthead h1 {
+    font-size: clamp(1.35rem, 11vw, 2.8rem);
+    letter-spacing: 0.035em;
+  }
+
+  .title-screen__title-sprite {
+    height: clamp(2rem, 7.5vw, 2.8rem);
+  }
+}
+
+@media (max-height: 620px) {
+  .title-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 44rem);
+    grid-template-rows: auto 1.4rem auto minmax(1rem, 1fr);
+    justify-content: center;
+    padding-top: 6rem;
+    padding-bottom: 2rem;
+  }
+
+  .title-screen__masthead {
+    position: static;
+    grid-column: 1;
+    grid-row: 1;
+    width: min(100%, 44rem);
+    transform: none;
+  }
+
+  .title-screen__navigation {
+    position: static;
+    grid-column: 1;
+    grid-row: 3;
+    width: min(100%, 44rem);
+    transform: none;
+  }
+
+  .title-screen__navigation li + li {
+    margin-top: 0.25rem;
+  }
+
+  .title-screen__option {
+    min-height: 2.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+}
+
+/* ---- Header back control --------------------------------------------- */
+.back-button {
+  flex: 0 0 auto;
+  display: grid;
+  box-sizing: border-box;
+  width: 2.4rem;
+  min-height: 2.4rem;
+  height: 2.4rem;
+  place-items: center;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 1.35rem;
+  line-height: 1;
+  text-decoration: none;
+}
+
+/* ---- Article provenance ---------------------------------------------- */
+.source-note {
+  margin: 0 0 2rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.source-note strong {
+  color: var(--foreground);
+}
+
+/* ---- Article media: field-record cards, not default theme thumbnails -- */
+.article-media {
+  width: min(100%, var(--article-media-width, 42rem));
+  margin: 2rem auto 2.5rem;
+}
+
+.article-media--wide {
+  --article-media-width: 48rem;
+}
+
+.article-media--medium {
+  --article-media-width: 34rem;
+}
+
+.article-media--narrow {
+  --article-media-width: 24rem;
+}
+
+.article-media--left {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.article-media--right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.article-media__link {
+  display: block;
+}
+
+.article-media img,
+.article-media video {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: 8px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 8px;
+  overflow: hidden;
+}
+
+.article-media figcaption {
+  margin: 0.55rem 0 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.article-media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.25rem;
+  width: min(100%, 48rem);
+  margin: 2rem auto 2.5rem;
+}
+
+.article-media-grid .article-media {
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .article-media-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Article hierarchy: terminal-newspaper chapter furniture --------- */
+.post-content h2 {
+  margin: 4rem 0 1.7rem;
+  color: var(--accent);
+  font-size: calc(var(--font-size) * 1.4);
+  line-height: 1.25;
+}
+
+.post-content > h2:first-child {
+  margin-top: 2.5rem;
+}
+
+.post-content h2::after {
+  display: block;
+  width: 100%;
+  height: 3px;
+  margin-top: 0.35rem;
+  background: var(--accent);
+  content: "";
+}
+
+/* A subsection reads as the label of the material immediately below it. */
+.post-content h3 {
+  margin: 3rem 0 2rem;
+  color: var(--accent);
+}
+
+.post-content h3 + p,
+.post-content h3 + ul,
+.post-content h3 + ol,
+.post-content h3 + blockquote,
+.post-content h3 + pre,
+.post-content h3 + table,
+.post-content h3 + figure {
+  margin-top: 2rem;
+}
+
+/* Keep prose visually nested beneath headings without shifting media. */
+.post-content {
+  --article-prose-inset: clamp(0.6rem, 1.7vw, 0.9rem);
+}
+
+.post-content > div > p,
+.post-content > div > ul,
+.post-content > div > ol,
+.post-content > div > blockquote,
+.post-content > div > pre,
+.post-content > div > table {
+  margin-left: var(--article-prose-inset);
+}
+
+/* Markdown --- is a quiet reading pause, not a chapter boundary. */
+.post-content hr {
+  width: auto;
+  height: 0;
+  margin: 25px var(--article-prose-inset);
+  border: 0;
+  border-top: 1px dashed var(--accent);
+  background: transparent;
+}
+
+
+/* ---- Inner-page header: preserve Terminal's original logo rail ------ */
+.header__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  padding: 0.35rem 0;
+  background: var(--background);
+  transition: background-color 0.2s ease;
+}
+
+/* ---- Section indexes: Terminal's divider belongs to the section title -- */
+.section-index {
+  margin-top: 3rem;
+}
+
+.section-index__header {
+  margin-bottom: 2.5rem;
+}
+
+.section-index__header h1 {
+  margin: 0;
+  color: var(--accent);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.1;
+}
+
+.section-index__rule {
+  height: 7px;
+  margin: 0.7rem 0 1rem;
+  border-top: 3px dotted var(--accent);
+  border-bottom: 3px dotted var(--accent);
+}
+
+.section-index__description {
+  max-width: 48rem;
+  color: var(--muted);
+}
+
+.section-index__description> :first-child {
+  margin-top: 0;
+}
+
+.section-index__description> :last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Portfolio: portrait covers within the regular reading column ---- */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.project-poster {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  aspect-ratio: 2 / 3;
+  padding: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 16%, transparent);
+  background: rgb(128 128 128 / 16%);
+  color: var(--foreground);
+}
+
+.project-poster__status {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 35%, transparent);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.project-poster__title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.project-poster__subtitle {
+  margin: 0.65rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+  .project-grid {
+    grid-template-columns: minmax(0, 20rem);
+    justify-content: center;
+  }
+}
+
+.portfolio-empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Gallery works are page bundles; place a cover.* file beside each index.md. */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: 1.25rem;
+}
+
+.gallery-card {
+  margin: 0;
+}
+
+.gallery-card a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.gallery-card img,
+.gallery-card__missing {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0;
+  border: 8px solid var(--accent);
+  border-radius: 0;
+  padding: 8px;
+  object-fit: contain;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+.gallery-card__missing {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.gallery-card__title {
+  display: block;
+  margin-top: 0.55rem;
+  color: var(--foreground);
+}
+
+.gallery-card a:hover .gallery-card__title {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Gallery detail pages preserve pixel-art scale; center only their cover. */
+.gallery-artwork__cover {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---- About: external presences as Terminal-style launch points -------- */
+.social-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: 0.7rem;
+  margin: 2rem 0;
+}
+
+.social-links__item {
+  display: grid;
+  grid-template-columns: 1.35rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 3rem;
+  padding: 0.55rem 0.75rem;
+  border: 2px solid var(--accent);
+  color: var(--foreground);
+  text-decoration: none;
+  transition: background-color 0.12s linear, color 0.12s linear;
+}
+
+.social-links__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: currentColor;
+}
+
+.social-links__external {
+  color: var(--muted);
+}
+
+.social-links__item:hover .social-links__external,
+.social-links__item:focus-visible .social-links__external {
+  color: inherit;
+}
+
+/* ---- Note index: quiet log entries; the section keeps the loud divider -- */
+.note-list {
+  width: 100%;
+}
+
+.note-card {
+  margin: 0;
+  padding: 0.4rem 0 1.4rem 1.1rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.note-card+.note-card {
+  margin-top: 1.1rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
+.note-card:hover {
+  border-left-color: var(--accent);
+}
+
+.note-card__meta,
+.note-card__tags {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.note-card__meta>*:not(:first-child)::before {
+  content: "::";
+  display: inline-block;
+  margin: 0 0.55rem;
+}
+
+.note-card__title {
+  margin: 0.4rem 0 0.55rem;
+  color: var(--accent);
+  font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+  line-height: 1.3;
+}
+
+.note-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.note-card__title a:hover {
+  text-decoration: underline;
+}
+
+.note-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.85rem;
+}
+
+.note-card__summary {
+  max-width: 48rem;
+  margin-top: 0.8rem;
+}
+
+.note-card__summary p {
+  margin: 0;
+}
+
+.note-card__read-more {
+  display: inline-block;
+  margin-top: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.note-card__read-more:hover {
+  text-decoration: underline;
+}
+
+.header__utilities {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theme-toggle,
+.menu--mobile .menu__trigger {
+  box-sizing: border-box;
+  min-height: 2.4rem;
+  height: 2.4rem;
+}
+
+.theme-toggle {
+  margin-left: 0;
+  padding: 0 0.65rem;
+}
+
+.menu--mobile .menu__trigger {
+  margin-left: 0;
+  padding: 0 0.65rem;
+}
+
+@media (max-width: 684px) {
+  .menu--mobile .menu__trigger {
+    display: inline-flex;
+    align-items: center;
+  }
+
+}
+
+/* ---- Article map: desktop rail, mobile drawer ------------------------ */
+.header__navigation-controls {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.article-toc-toggle {
+  display: none;
+  box-sizing: border-box;
+  width: 2.4rem;
+  min-height: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 2px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  line-height: 1;
+}
+
+.scroll-to-top {
+  display: grid;
+  box-sizing: border-box;
+  width: 2.4rem;
+  min-height: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 2px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  place-items: center;
+}
+
+.scroll-to-top__icon {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.post-with-toc {
+  margin-top: 25px;
+}
+
+.post-with-toc .post-content {
+  margin-top: 0;
+}
+
+.article-toc__title {
+  margin: 0 0 0.7rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.article-toc #TableOfContents ul,
+.article-toc #TableOfContents li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post .article-toc #TableOfContents li::before {
+  content: none;
+}
+
+.article-toc #TableOfContents ul ul {
+  margin: 0.2rem 0 0.25rem 0.8rem;
+}
+
+.article-toc #TableOfContents a {
+  position: relative;
+  display: block;
+  padding: 0.27rem 0.35rem;
+  color: var(--foreground);
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.article-toc #TableOfContents a::before {
+  position: absolute;
+  left: -0.7rem;
+  color: var(--accent);
+  content: ">";
+  opacity: 0;
+}
+
+.article-toc #TableOfContents a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.article-toc #TableOfContents a.is-active {
+  color: var(--background);
+  background: var(--accent);
+}
+
+.article-toc #TableOfContents a.is-active::before {
+  opacity: 1;
+}
+
+@media (min-width: 1120px) {
+  .post-with-toc {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(8.5rem, 12vw, 12rem);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    width: calc(100% + clamp(8.5rem, 12vw, 12rem) + clamp(1rem, 2vw, 1.5rem));
+  }
+
+  .post-with-toc .post-content {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .article-toc {
+    position: sticky;
+    top: 1.75rem;
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    max-height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+  }
+
+  .article-toc__panel {
+    padding-left: 0.8rem;
+    border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+}
+
+@media (max-width: 1119px) {
+  body.article-toc-open {
+    overflow: hidden;
+  }
+
+  .article-toc-toggle {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .post-with-toc {
+    display: block;
+    width: auto;
+  }
+
+  .article-toc {
+    position: fixed;
+    z-index: 20;
+    inset: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .article-toc::before {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--background) 45%, transparent);
+    content: "";
+    opacity: 0;
+    transition: opacity 0.16s ease-out;
+  }
+
+  .article-toc__panel {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: min(82vw, 20rem);
+    padding: 1.4rem 1.25rem;
+    overflow-y: auto;
+    border-right: 2px solid var(--accent);
+    background: var(--background);
+    transform: translateX(-105%);
+    transition: transform 0.16s ease-out;
+  }
+
+  .article-toc.is-open {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .article-toc.is-open::before {
+    opacity: 1;
+  }
+
+  .article-toc.is-open .article-toc__panel {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-toc::before,
+  .article-toc__panel {
+    transition: none;
+  }
+}
+
+/* ---- Shared interaction states -------------------------------------- */
+/* Standalone titles get one rectangular frame even when the text wraps. */
+.post-title a,
+.note-card__title a {
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* Content links and native controls share one palette-aware focus frame. */
+:is(a, button, input, textarea, select, summary, video, audio,
+    [tabindex], [contenteditable]):focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+/* Match the back control's immediate feedback when keyboard focus moves. */
+button,
+[data-title-menu-item],
+.social-links__item {
+  transition: none;
+}
+
+/* Treat action links and language choices like the back button. */
+:is(button, input[type="button"], input[type="submit"], input[type="reset"],
+    [role="button"], .button, .button a, .back-button, .menu__trigger,
+    .language-selector__trigger, .language-selector__options a,
+    [data-title-menu-item], .social-links__item,
+    .code-title .copy-button):is(:hover, :focus-visible) {
+  background: var(--accent);
+  color: var(--background);
+  outline: none;
+  box-shadow: none;
+}
