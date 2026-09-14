@@ -1,0 +1,50 @@
++++
+title = "示例文章:排版预览"
+date = "2026-08-20T10:00:00+08:00"
+author = "Akiloneus"
+tags = ["示例", "排版"]
+keywords = ["Hugo", "Terminal", "排版"]
+description = "一篇用来预览正文排版效果的示例文章,可随时编辑或删除。"
+showFullContent = false
+readingTime = false
+hideComments = false
+draft = true
++++
+
+这是一篇**示例文章**,用来看看正文在羊皮卷配色下的排版效果。你可以直接编辑它,或删掉换成自己的内容。
+
+## 段落与行内元素
+
+正文段落里可以有*斜体*、**粗体**,以及行内代码 `hugo server`。外部链接长这样:[Hugo 官方文档](https://gohugo.io/)。中英文混排时,标点与字间距也一并在这里检查。
+
+## 列表
+
+无序列表:
+
+- 标题、日期、标签都写在顶部的 front matter 里
+- 正文用 Markdown 书写,保存即可预览
+- 图片放到 `static/` 下,用 `![说明](/图片名)` 引用
+
+有序列表:
+
+1. 新建 `.md` 文件
+2. 填写 front matter 与正文
+3. 保存,查看效果
+
+## 代码块
+
+带语法高亮的代码块:
+
+```bash
+# 新建一篇文章
+hugo new content posts/my-post.md
+
+# 本地预览(含草稿)
+hugo server -D --baseURL http://localhost:1313/
+```
+
+## 引用
+
+> 简洁是可靠的前提。
+
+到这里,标题、段落、列表、代码、引用、链接在当前配色下的样式就都能看到了。把这篇删掉或改写,就是你的第一篇正式文章。
