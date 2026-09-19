@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Game Feel on ケッサリア</title><link>https://akiloneus.github.io/ja/tags/game-feel/</link><description>Recent content in Game Feel on ケッサリア</description><generator>Hugo</generator><language>ja-JP</language><lastBuildDate>Fri, 18 Sep 2026 18:55:00 +0800</lastBuildDate><atom:link href="https://akiloneus.github.io/ja/tags/game-feel/index.xml" rel="self" type="application/rss+xml"/><item><title>IK-driven Character Body Control System</title><link>https://akiloneus.github.io/ja/notes/ik-driven-character-body-control-system/</link><pubDate>Fri, 18 Sep 2026 18:55:00 +0800</pubDate><guid>https://akiloneus.github.io/ja/notes/ik-driven-character-body-control-system/</guid><description>&lt;p&gt;
+&lt;span&gt;&lt;/span&gt;
+&lt;/p&gt;
+&lt;p&gt;IK-driven Character Body Control System は、従来の入力デバイス（キーボード＆マウス、ゲームパッド）と 6DoF VR モーションコントローラーとの間にある操作体験の溝を埋めるために設計された、実験的な一人称／三人称（FPP/TPP）向けキャラクター操作システムです。プレイヤーの手動操作による直感的な 3D 空間リーチ・奥行き・掌の向きの制御を提供し、プロシージャルな全身逆運動学（Procedural Full-Body IK / VRIK）によって上半身の姿勢・脊椎のしなり・胴体の傾きを自動連動させることで、自然で説得力のある物理インタラクションを実現します。&lt;/p&gt;
+&lt;h2 id="着想と設計思想"&gt;着想と設計思想&lt;/h2&gt;
+&lt;p&gt;従来の非 VR ゲームにおける環境インタラクションは、大半が二者択一的です。キーを押して定型のアニメーション（Canned Animation）を再生させるか、クロスヘアによるレイキャストで剛体オブジェクトを操作するにとどまります。対照的に、6DoF VR システムは圧倒的な物理的能動性（Physical Agency）と没入感をもたらし、プレイヤーが自らの手を 3D 空間へ伸ばし、触れ、位置を合わせ、引き寄せるといった直接的な挙動を可能にします。&lt;/p&gt;
+&lt;p&gt;本プロジェクトは、操作体系を過度に複雑化させることなく、同等の空間操作感をいかにして通常ディスプレイ（フラットスクリーン）へ落とし込めるかという探求から始まりました。その設計は、&lt;em&gt;OPERATOR&lt;/em&gt; におけるドアノブを直接押し開けるような物理インタラクションをはじめ、&lt;em&gt;VRChat&lt;/em&gt; や &lt;em&gt;Arma Reforger&lt;/em&gt; がもたらす一人称視点での身体性やフリールック（Free Look）、そして &lt;em&gt;TABG&lt;/em&gt; や &lt;em&gt;How to Fish&lt;/em&gt; に見られる動的な四肢の触感フィードバックなど、数々の作品から受けたインスピレーションによって形作られています。&lt;/p&gt;
+&lt;p&gt;本システムでは、キャラクターの手足を不器用なラグドールのように操るのではなく、&lt;strong&gt;「プレイヤーによる能動的入力」&lt;/strong&gt; と &lt;strong&gt;「プロシージャルな受動的補正」&lt;/strong&gt; の役割を明確に切り分けています：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;能動的操作（プレイヤー入力）&lt;/strong&gt;：プレイヤーは空間的な意図を直接指示します。左右の手の個別展開、ホイールによるリーチ深度の調整、掌のピッチ／ロール回転、ピンチ入力によるドラッグなどを担当します。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;受動的補正（プロシージャル IK）&lt;/strong&gt;：脊椎の湾曲、胴体の捻り、肩の前方突出、肘の曲がりヒント（Elbow Hints）などは、解剖学的に自然な姿勢を保つよう、全身 IK ソルバーがリアルタイムにプロシージャル解算を行います。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="システムアーキテクチャ"&gt;システムアーキテクチャ&lt;/h2&gt;
+&lt;p&gt;本アーキテクチャは、純粋な空間幾何計算およびステート管理ロジックを、Unity エンジンのライフサイクルや特定のアニメーションリグから疎結合に分離しています。&lt;/p&gt;
+&lt;h3 id="1-純粋ステートマシンと意図パイプライン"&gt;1. 純粋ステートマシンと意図パイプライン&lt;/h3&gt;
+&lt;p&gt;基礎レイヤーにおいて、&lt;code&gt;HandStateController&lt;/code&gt; が左右の手の独立した実行状態（&lt;code&gt;Resting&lt;/code&gt; 静止、&lt;code&gt;FreeReaching&lt;/code&gt; 自由伸展、&lt;code&gt;Retracting&lt;/code&gt; 格納、&lt;code&gt;AttachedOpen&lt;/code&gt; 吸着・開手、&lt;code&gt;AttachedPinched&lt;/code&gt; 吸着・ピンチ）を管理します：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;深度同期を備えた独立トグル&lt;/strong&gt;：左右の手を個別に展開・格納できます。両手を同時に前進させた場合は、伸展深度が自動的かつ滑らかに同期します。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;サーフェスおよびハンドルへの吸着（&lt;code&gt;SliderHandleInteractionTarget&lt;/code&gt;）&lt;/strong&gt;：&lt;em&gt;OPERATOR&lt;/em&gt; などの扉操作メカニクスに着想を得ており、インタラクト可能なオブジェクト付近へ手を伸ばすと、事前定義された接触アンカーへ自動吸着します。ピンチ／ドラッグ入力を保持することで、視線ピッチの差分やホイール入力を対象オブジェクトの移動軸（ドアハンドルの押し込みやラッチのスライドなど）へダイレクトに反映し、開手・ピンチ・離脱で異なる掌ポーズを描画します。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="2-解析的空間リーチソルバー"&gt;2. 解析的空間リーチソルバー&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;HandReachSolver&lt;/code&gt; は、Unity のコンポーネントに依存しない純粋な C# 数学ソルバーであり、ボーン変形が適用される前に目標となる掌の姿勢（Transform）を算出します：&lt;/p&gt;</description></item></channel></rss>

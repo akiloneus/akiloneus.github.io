@@ -1,0 +1,14 @@
++++
+title = "Hello World"
+date = "2026-08-19T20:23:32+08:00"
+#dateFormat = "2006-01-02" # This value can be configured for per-post date formatting
+author = "Akiloneus"
+#authorTwitter = "" #do not include @
+#cover = ""
+tags = ["test", "Hugo"]
+keywords = ["Hugo", "Terminal"]
+description = "First post"
+showFullContent = false
+readingTime = false
+hideComments = false
++++
