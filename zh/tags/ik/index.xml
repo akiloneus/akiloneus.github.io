@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>IK on Kessaria</title><link>https://akiloneus.github.io/zh/tags/ik/</link><description>Recent content in IK on Kessaria</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Fri, 18 Sep 2026 18:55:00 +0800</lastBuildDate><atom:link href="https://akiloneus.github.io/zh/tags/ik/index.xml" rel="self" type="application/rss+xml"/><item><title>IK-driven Character Body Control System</title><link>https://akiloneus.github.io/zh/notes/ik-driven-character-body-control-system/</link><pubDate>Fri, 18 Sep 2026 18:55:00 +0800</pubDate><guid>https://akiloneus.github.io/zh/notes/ik-driven-character-body-control-system/</guid><description>&lt;p&gt;
+&lt;span&gt;&lt;/span&gt;
+&lt;/p&gt;
+&lt;p&gt;IK-driven Character Body Control System 是一套实验性的第一与第三人称角色交互系统，旨在弥合键盘、鼠标与手柄等传统输入设备与 6 自由度 VR 动作控制器之间的操作体验鸿沟。该系统为玩家的双手机动提供了直观的 3D 空间伸展、深度调节与手掌朝向控制，并通过程序化全身反向动力学自动协调上身姿态、脊椎曲度与躯干倾斜，以实现自然可信的物理交互。&lt;/p&gt;
+&lt;h2 id="灵感来源与设计哲学"&gt;灵感来源与设计哲学&lt;/h2&gt;
+&lt;p&gt;在传统的非 VR 游戏中，环境交互多为二元状态：玩家通过按下按键触发一段固定的预制动画，或是仅凭准星射线拾取刚体道具。与此相对，6 自由度 VR 设备赋予了玩家极高的物理能动性与沉浸感——允许玩家直接伸手探入 3D 空间，去触摸、校准对齐或拖拽物体。&lt;/p&gt;
+&lt;p&gt;本项目的初衷，正是探索如何将这种空间操作感引入传统的平面屏幕中，同时避免操作机制变得繁琐晦涩。整个系统的设计思路深受多款作品的启发：无论是 &lt;em&gt;OPERATOR&lt;/em&gt; 中伸手推拉门把手的触觉反馈，&lt;em&gt;VRChat&lt;/em&gt; 与 &lt;em&gt;Arma Reforger&lt;/em&gt; 在第一人称视角下营造的身体临场感与自由视线，还是 &lt;em&gt;TABG&lt;/em&gt; 与 &lt;em&gt;How to Fish&lt;/em&gt; 等游戏中动态肢体带来的即兴物理反馈，都在这套交互框架中留下了印记。&lt;/p&gt;
+&lt;p&gt;系统并未将角色肢体做成笨拙的布娃娃木偶，而是严格划分了&lt;strong&gt;玩家主动控制&lt;/strong&gt;与&lt;strong&gt;程序化被动代偿&lt;/strong&gt;的职责边界：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;玩家主动控制&lt;/strong&gt;：玩家直接输入空间交互意图——独立切换任一手、通过滚轮调节伸展深度、旋转手掌俯仰与内翻角度、或按住进行捏合拖拽。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;程序化被动代偿&lt;/strong&gt;：角色的脊柱弯曲、躯干转动、肩膀前探与肘部弯曲提示，全部由全身 IK 解算器实时程序化解算，维持自然的人体解剖学姿态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="系统架构"&gt;系统架构&lt;/h2&gt;
+&lt;p&gt;该架构将纯粹的空间数学与状态逻辑同 Unity 引擎生命周期及动画骨骼深度解耦。&lt;/p&gt;
+&lt;h3 id="1-纯状态机与意图管线"&gt;1. 纯状态机与意图管线&lt;/h3&gt;
+&lt;p&gt;在基础层，&lt;code&gt;HandStateController&lt;/code&gt; 负责管理双手的独立运行状态，涵盖静止、自由伸展、缩回、吸附张开与吸附捏紧：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;独立开关与共享深度&lt;/strong&gt;：左右手可分别独立唤出或收回。当双手同时向前伸展时，伸展深度会自动平滑同步。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;表面与把手吸附&lt;/strong&gt;：直接受到 &lt;em&gt;OPERATOR&lt;/em&gt; 等游戏中物理化开门机制的启发，当手掌接近可交互物件时，会自动吸附至预设的接触锚点。按住捏合/拖拽键即可将视角俯仰差值或滚轮输入转换为目标物体的物理位移（例如推压门把手或推拉滑栓），并在张开、捏紧与释放时呈现差异化的手掌姿态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="2-解析空间伸展解算器"&gt;2. 解析空间伸展解算器&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;HandReachSolver&lt;/code&gt; 是一个不依赖 Unity 引擎组件的纯 C# 数学解算器，在骨骼变换计算前求出目标手掌位姿：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;聚拢式伸展轨迹&lt;/strong&gt;：手臂向前伸展并非沿两条平行的直线推进。解算器在近距离时采用较宽的肩宽间距，随着向前延伸线性插值收敛到较窄的间距，完美拟合人体双臂自然伸展的几何学。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;手掌朝向框架&lt;/strong&gt;：手掌旋转由相对于中性参考系的俯仰角与对称内翻角计算得出，确保手腕在任意伸展高度下都能维持合理的空间朝向。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="3-vrik-姿态驱动与形态塑造"&gt;3. VRIK 姿态驱动与形态塑造&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;HandPoseDriver&lt;/code&gt; 负责将抽象的手部解算目标桥接到 RootMotion 的 VRIK 中，直接接入解算前后管线的 &lt;code&gt;OnPreUpdate&lt;/code&gt; 与 &lt;code&gt;OnPostUpdate&lt;/code&gt; 阶段：&lt;/p&gt;</description></item></channel></rss>

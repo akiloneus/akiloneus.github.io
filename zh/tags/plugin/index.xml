@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Plugin on Kessaria</title><link>https://akiloneus.github.io/zh/tags/plugin/</link><description>Recent content in Plugin on Kessaria</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Mon, 14 Sep 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://akiloneus.github.io/zh/tags/plugin/index.xml" rel="self" type="application/rss+xml"/><item><title>SiNiSistar2 HeatSeekar - 游戏体验优化 Mod</title><link>https://akiloneus.github.io/zh/resources/sinisistar2-heatseekar-mod/</link><pubDate>Mon, 14 Sep 2026 00:00:00 +0800</pubDate><guid>https://akiloneus.github.io/zh/resources/sinisistar2-heatseekar-mod/</guid><description>&lt;p&gt;SiNiSistar2 HeatSeekar Mod 是一款面向 SiNiSistar2（&lt;a href="https://www.dlsite.com/maniax/work/=/product_id/RJ01169914.html"&gt;DLsite&lt;/a&gt; / &lt;a href="https://store.steampowered.com/app/4466620/SiNiSistar_2/"&gt;Steam&lt;/a&gt;）的免费游戏体验优化 Mod，提供原生鼠标按键绑定、菜单鼠标操作、显示选项改进等功能……&lt;/p&gt;
+&lt;p&gt;太长不看，直接前往&lt;a href="https://akiloneus.github.io/zh/resources/sinisistar2-heatseekar-mod/#download"&gt;&lt;strong&gt;下载&lt;/strong&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="intro"&gt;前言&lt;/h2&gt;
+&lt;p&gt;各位蛞蝓，大家好。&lt;/p&gt;
+&lt;p&gt;距离 SiNiSistar2 在 Steam 上发售，以及我上传 Modernization Mod Pack，已经过去几个月了。这段时间我一直在开发致敬同人游戏 Rabiane，也在做其他几个项目——包括你现在正在浏览的这个网站。&lt;/p&gt;
+&lt;p&gt;直到最近，我突然有了一个想法：做一个新 Mod，把旧 Mod 包里的实用功能整合进游戏的原生菜单，同时让游戏直接支持鼠标按键输入，替代之前通过按键映射实现的方式。&lt;/p&gt;
+&lt;p&gt;感谢你使用我的 Mod，希望你玩得开心！&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;不知道在这里说是否合适，不过我最大的心愿，是能得到 SiNiSistar 系列的制作社团 Uu，尤其是设计师 Nennai 的关注和认可。&lt;/p&gt;
+&lt;p&gt;引き続き精進してまいります、ねんないさん！&lt;/p&gt;
+&lt;h2 id="features"&gt;功能&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;&amp;gt; 今后可能会加入更多改善游戏体验的功能。
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="graphics"&gt;图形&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;分辨率改进&lt;/strong&gt;：在保留游戏原有 2:1 画面比例的同时，可以选择更适合显示器的分辨率。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;全屏模式改进&lt;/strong&gt;：改善全屏显示方式，让界面元素保持清晰，不再因放大而模糊。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;帧率限制改进&lt;/strong&gt;：可以设置帧率上限，也可以解除帧率限制。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class="article-media article-media--standard article-media--center"&gt;
+ &lt;a class="article-media__link" href="https://akiloneus.github.io/resources/sinisistar2-heatseekar-mod/media/screenshot_menu_preview_video.png" aria-label="Open Video 设置页，显示 HeatSeekar 添加的分辨率、帧率和 Preserve 2:1 显示比例选项 at full size"&gt;
+ &lt;img src="https://akiloneus.github.io/resources/sinisistar2-heatseekar-mod/media/screenshot_menu_preview_video.png" alt="Video 设置页，显示 HeatSeekar 添加的分辨率、帧率和 Preserve 2:1 显示比例选项" loading="lazy" width="632" height="808"&gt;
+ &lt;/a&gt;
+ &lt;figcaption id="media-caption-1"&gt;集成了 HeatSeekar 选项的 Video 设置页。&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id="audio"&gt;音频&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;后台静音开关&lt;/strong&gt;：游戏窗口失去焦点时自动静音。（Alt-Tab 切出去时，别让别人听到 Sistars 在后台的呻吟声！）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class="article-media article-media--standard article-media--center"&gt;
+ &lt;a class="article-media__link" href="https://akiloneus.github.io/resources/sinisistar2-heatseekar-mod/media/screenshot_menu_preview_audio.png" aria-label="Open Audio 设置页，显示 HeatSeekar 添加的后台静音选项 at full size"&gt;
+ &lt;img src="https://akiloneus.github.io/resources/sinisistar2-heatseekar-mod/media/screenshot_menu_preview_audio.png" alt="Audio 设置页，显示 HeatSeekar 添加的后台静音选项" loading="lazy" width="659" height="784"&gt;
+ &lt;/a&gt;
+ &lt;figcaption id="media-caption-2"&gt;集成了 HeatSeekar 选项的 Audio 设置页。&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id="uiux"&gt;界面与操作&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;原生鼠标支持&lt;/strong&gt;：将鼠标按键直接绑定到游戏操作，并用鼠标操作菜单。（没错，现在只用一只手就能浏览画廊，无论是用键盘还是鼠标。）&lt;/p&gt;</description></item></channel></rss>
